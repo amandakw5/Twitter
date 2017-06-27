@@ -69,7 +69,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
         public ViewHolder(View itemView){
             super(itemView);
-
             // perform findViewById lookups
 
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
@@ -96,7 +95,4 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
         return relativeDate;
     }
-
-
-
 }

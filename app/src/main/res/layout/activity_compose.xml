@@ -6,4 +6,33 @@
     android:layout_height="match_parent"
     tools:context="com.codepath.apps.restclienttemplate.ComposeActivity">
 
+    <EditText
+        android:id="@+id/tweetbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:ems="10"
+        android:hint="What's Happening?"
+        android:inputType="textAutoComplete|textMultiLine|textPersonName"
+        android:textAlignment="viewStart" />
+
+    <Button
+        android:id="@+id/atweet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tweet"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:id="@+id/hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tweetbox"
+        android:layout_marginStart="105dp"
+        android:layout_marginTop="89dp"
+        app:srcCompat="@drawable/ic_launcher" />
 </RelativeLayout>
