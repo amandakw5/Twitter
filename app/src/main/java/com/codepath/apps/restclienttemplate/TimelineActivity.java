@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
+import static com.codepath.apps.restclienttemplate.R.id.swipeContainer;
+
 public class TimelineActivity extends AppCompatActivity {
 
     TwitterClient client;
@@ -29,6 +32,7 @@ public class TimelineActivity extends AppCompatActivity {
     RecyclerView rvTweets;
     private final int REQUEST_CODE = 20;
     Tweet newtweet;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +51,153 @@ public class TimelineActivity extends AppCompatActivity {
         // set the adapter
         rvTweets.setAdapter(tweetAdapter);
         populateTimeline();
+        refreshLayout = (SwipeRefreshLayout) findViewById(swipeContainer);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                tweetAdapter.clear();
+                //fetchTimelineAsync(0);
+                populateTimeline();
+                refreshLayout.setRefreshing(false);
+            }
+        });
+
+        // Configure the refreshing colors
     }
+//    public void fetchTimelineAsync(int page) {
+//        // Send the network request to fetch the updated data
+//        // `client` here is an instance of Android Async HTTP
+//        // getHomeTimeline is an example endpoint.
+//
+//        client.getHomeTimeline(0, new JsonHttpResponseHandler() {
+//            public void onSuccess(JSONArray json) {
+//                // Remember to CLEAR OUT old items before appending in the new ones
+//
+//                // ...the data has come back, add new items to your adapter...
+//                TweetAdapter.addAll(json);
+//                // Now we call setRefreshing(false) to signal refresh has finished
+//
+//            }
+//
+//            public void onFailure(Throwable e) {
+//                Log.d("DEBUG", "Fetch timeline error: " + e.toString());
+//            }
+//        });
+//    }
+
+
+
+
+    //initSwipeOptions();
+        // Setup refresh listener which triggers new data loading
+
+//    private void initSwipeOptions() {
+//        refreshLayout.setOnRefreshListener(this);
+//        setAppearance();
+//        disableSwipe();
+//    }
+//
+//    private void setAppearance() {
+//        refreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
+//    }
+//
+//    /**
+//     * It shows the SwipeRefreshLayout progress
+//     */
+//    public void showSwipeProgress() {
+//        refreshLayout.setRefreshing(true);
+//    }
+//
+//    /**
+//     * It shows the SwipeRefreshLayout progress
+//     */
+//    public void hideSwipeProgress() {
+//        refreshLayout.setRefreshing(false);
+//    }
+//
+//    /**
+//     * Enables swipe gesture
+//     */
+//    public void enableSwipe() {
+//        refreshLayout.setEnabled(true);
+//    }
+//
+//    /**
+//     * Disables swipe gesture. It prevents manual gestures but keeps the option tu show
+//     * refreshing programatically.
+//     */
+//    public void disableSwipe() {
+//        refreshLayout.setEnabled(false);
+//    }
+//
+//    /**
+//     * It must be overriden by parent classes if manual swipe is enabled.
+//     */
+//    @Override public void onRefresh() {
+//        // Empty implementation
+//    }
+//    refreshLayout.setOnScrollListener(new AbsListView.OnScrollListener() {
+//        @Override
+//        public void onScrollStateChanged(AbsListView view, int scrollState) {
+//
+//        }
+//
+//        @Override
+//        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//            int topRowVerticalPosition =
+//                    (guidesList == null || guidesList.getChildCount() == 0) ?
+//                            0 : guidesList.getChildAt(0).getTop();
+//            swipeContainer.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
+//        }
+//    });
+//
+
+//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                // Your code to refresh the list here.
+//                // Make sure you call swipeContainer.setRefreshing(false)
+//                // once the network request has completed successfully.
+//                fetchTimelineAsync(0);
+//            }
+//        });
+//        // Configure the refreshing colors
+//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
+//
+//    }
+//    public void fetchTimelineAsync(int page) {
+//        // Send the network request to fetch the updated data
+//        // `client` here is an instance of Android Async HTTP
+//        // getHomeTimeline is an example endpoint.
+//
+//        client.getHomeTimeline(0, new JsonHttpResponseHandler() {
+//            public void onSuccess(JSONArray json) {
+//                // Remember to CLEAR OUT old items before appending in the new ones
+//                tweetAdapter.clear();
+//                // ...the data has come back, add new items to your adapter...
+//                tweetAdapter.addAll(tweets);
+//                // Now we call setRefreshing(false) to signal refresh has finished
+//                swipeContainer.setRefreshing(false);
+//            }
+//
+//            public void onFailure(Throwable e) {
+//                Log.d("DEBUG", "Fetch timeline error: " + e.toString());
+//            }
+//        });
+//    }
 
 
     private void populateTimeline() {
-        client.getHomeTimeline(new JsonHttpResponseHandler(){
+        client.getHomeTimeline(0, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("TwitterClient", response.toString());
@@ -121,7 +267,7 @@ public class TimelineActivity extends AppCompatActivity {
         // REQUEST_CODE is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             // Extract name value from result extras
-            newtweet = Parcels.unwrap(data.getParcelableExtra("twee"));            // Toast the name to display temporarily on screen
+            newtweet = Parcels.unwrap(data.getParcelableExtra("twee"));
             Toast.makeText(this, "tweeted", Toast.LENGTH_SHORT).show();
             tweets.add(0, newtweet);
             tweetAdapter.notifyItemInserted(0);
