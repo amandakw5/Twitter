@@ -1,9 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.apps.restclienttemplate.models.TweetDetails">
+    tools:context="com.codepath.apps.restclienttemplate.TweetDetails">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/dtProfilePicture"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@android:color/black" />
+
+    <TextView
+        android:id="@+id/dtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/dtProfilePicture"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/dtUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dtName"
+        android:layout_toEndOf="@+id/dtProfilePicture" />
+
+    <TextView
+        android:id="@+id/dtBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/dtProfilePicture" />
+
+    <ImageView
+        android:id="@+id/dtreply"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/replyicon"
+        android:layout_below="@+id/dtBody"
+        android:layout_toEndOf="@+id/dtProfilePicture" />
+
+    <ImageView
+        android:id="@+id/dtHeart"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/heart"
+
+        android:layout_marginEnd="61dp"
+        android:layout_below="@+id/dtBody"
+        android:layout_toStartOf="@+id/dtMessage" />
+
+    <ImageView
+        android:id="@+id/dtMessage"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@drawable/message"
+        android:layout_marginEnd="85dp"
+        android:layout_alignTop="@+id/dtHeart"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:id="@+id/dtRetweet"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@+id/dtHeart"
+        android:layout_marginEnd="46dp"
+        android:layout_toStartOf="@+id/dtHeart"
+        app:srcCompat="@drawable/retweet" />
+
+</RelativeLayout>

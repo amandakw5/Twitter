@@ -77,7 +77,7 @@ public class TimelineActivity extends AppCompatActivity {
         ProgressBar v = (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
         // Return to finish
         return super.onPrepareOptionsMenu(menu);
-    } 
+    }
     public void showProgressBar() {
         // Show progress item
         miActionProgressItem.setVisible(true);
@@ -139,7 +139,6 @@ public class TimelineActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.login, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
