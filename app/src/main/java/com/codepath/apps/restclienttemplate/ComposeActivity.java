@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -19,6 +20,8 @@ import cz.msebera.android.httpclient.Header;
 public class ComposeActivity extends AppCompatActivity {
 
     TwitterClient client;
+    EditText typeMessageToPost;
+    TextView counter;
 
 
     @Override
@@ -26,10 +29,11 @@ public class ComposeActivity extends AppCompatActivity {
         client = TwitterApp.getRestClient();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
-
     }
+
+
     public void onSubmit(View v) {
-        final EditText etName = (EditText) v.findViewById(R.id.tweetbox);
+        final EditText etName = (EditText) findViewById(R.id.tweetbox);
         // Prepare data intent
         client.sendTweet(etName.getText().toString(), new JsonHttpResponseHandler(){
             @Override
@@ -38,7 +42,7 @@ public class ComposeActivity extends AppCompatActivity {
                 try {
                     Tweet t = Tweet.fromJSON(response);
                     Intent data = new Intent();
-                    data.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(t));
+                    data.putExtra("twee", Parcels.wrap(t));
                     // Pass relevant data back as a result
                     data.putExtra("entered", etName.getText().toString());
                     data.putExtra("code", 200); // ints work too

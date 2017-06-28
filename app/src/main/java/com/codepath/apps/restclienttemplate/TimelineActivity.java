@@ -28,7 +28,7 @@ public class TimelineActivity extends AppCompatActivity {
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
     private final int REQUEST_CODE = 20;
-    Tweet t;
+    Tweet newtweet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,12 +121,9 @@ public class TimelineActivity extends AppCompatActivity {
         // REQUEST_CODE is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             // Extract name value from result extras
-            String entered = data.getExtras().getString("entered");
-            int code = data.getExtras().getInt("code", 0);
-            t = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
-            // Toast the name to display temporarily on screen
+            newtweet = Parcels.unwrap(data.getParcelableExtra("twee"));            // Toast the name to display temporarily on screen
             Toast.makeText(this, "tweeted", Toast.LENGTH_SHORT).show();
-            tweets.add(0, t);
+            tweets.add(0, newtweet);
             tweetAdapter.notifyItemInserted(0);
             rvTweets.scrollToPosition(0);
         }
