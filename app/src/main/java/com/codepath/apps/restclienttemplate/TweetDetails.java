@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,7 +13,7 @@ import com.loopj.android.http.AsyncHttpClient;
 
 import org.parceler.Parcels;
 
-public class TweetDetails extends AppCompatActivity implements View.OnClickListener {
+public class TweetDetails extends AppCompatActivity {
     ImageView reply;
     Tweet tweet;
     Context context;
@@ -24,6 +25,7 @@ public class TweetDetails extends AppCompatActivity implements View.OnClickListe
     AsyncHttpClient client;
     String imageUrl;
     User user;
+    private final int REQUEST_CODE = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +46,13 @@ public class TweetDetails extends AppCompatActivity implements View.OnClickListe
         dtUserName.setText("@" + tweet.user.screenName);
         dtBody.setText(tweet.body);
 
-        reply.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-
+        reply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(TweetDetails.this, ReplyTweet.class);
+                i.putExtra("username", tweet.user.screenName);
+                startActivity(i);
+            }
+        });
     }
 }

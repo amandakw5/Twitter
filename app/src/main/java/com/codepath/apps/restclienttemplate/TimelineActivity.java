@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class TimelineActivity extends AppCompatActivity {
     Tweet newtweet;
     private SwipeRefreshLayout refreshLayout;
     MenuItem miActionProgressItem;
+    ImageView reply;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         // set the adapter
         rvTweets.setAdapter(tweetAdapter);
+        reply = (ImageView) findViewById(R.id.dtreply);
         populateTimeline();
 
         refreshLayout = (SwipeRefreshLayout) findViewById(swipeContainer);
@@ -67,6 +70,7 @@ public class TimelineActivity extends AppCompatActivity {
                 hideProgressBar();
             }
         });
+
     }
 
     @Override
@@ -165,4 +169,5 @@ public class TimelineActivity extends AppCompatActivity {
             rvTweets.scrollToPosition(0);
         }
     }
+
 }

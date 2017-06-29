@@ -19,6 +19,8 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by awestort on 6/26/17.
  */
@@ -27,6 +29,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     List<Tweet> mTweets;
     Context context;
+    private final int REQUEST_CODE = 20;
+    Tweet newtweet;
 
     // pass in the tweets array in the constructor
     public TweetAdapter(List<Tweet> tweets) {
@@ -67,6 +71,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public TextView tvBody;
         public TextView tvName;
         public TextView tvCreated;
+        public ImageView dtreply;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -76,8 +81,27 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvName = (TextView) itemView.findViewById(R.id.tvName);
+            dtreply = (ImageView) itemView.findViewById(R.id.dtreply);
             tvCreated = (TextView) itemView.findViewById(R.id.tvCreated);
-            itemView.setOnClickListener(this);
+            dtreply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    Tweet tweet = mTweets.get(position);
+                    Intent i = new Intent(context, ReplyTweet.class);
+                    i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                    ((TimelineActivity) context).startActivity(i);
+                }
+            });
+        }
+        protected void onActivityResult(int requestCode,int resultCode, Intent data) {
+            // REQUEST_CODE is defined above
+            if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+                // Extract name value from result extras
+                newtweet = Parcels.unwrap(data.getParcelableExtra("twee"));
+                mTweets.add(0, newtweet);
+                notifyItemInserted(0);
+            }
         }
         @Override
         public void onClick(View v) {
@@ -94,7 +118,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                 context.startActivity(intent);
             }
         }
+
     }
+
 
     public String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
