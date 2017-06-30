@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -20,17 +19,19 @@ import cz.msebera.android.httpclient.Header;
 public class ReplyTweet extends AppCompatActivity {
 
     TwitterClient client;
-    EditText typeMessageToPost;
-    TextView counter;
+    EditText etName;
+    Tweet tweet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         client = TwitterApp.getRestClient();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply_tweet);
+        tweet = Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
+        etName = (EditText) findViewById(R.id.tweetbox);
+        etName.setText("@" + tweet.user.name);
     }
     public void onSubmit(View v) {
-        final EditText etName = (EditText) findViewById(R.id.tweetbox);
         // Prepare data intent
         client.sendTweet(etName.getText().toString(), new JsonHttpResponseHandler(){
             @Override

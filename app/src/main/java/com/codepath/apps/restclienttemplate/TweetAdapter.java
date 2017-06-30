@@ -2,9 +2,18 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.icu.text.SimpleDateFormat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +21,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
+
+import cz.msebera.android.httpclient.Header;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -31,6 +45,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     Context context;
     private final int REQUEST_CODE = 20;
     Tweet newtweet;
+
 
     // pass in the tweets array in the constructor
     public TweetAdapter(List<Tweet> tweets) {
@@ -48,6 +63,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     // bind the values based on the position of the element
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        final int positionm = position;
+
         // get the data according to position
         Tweet tweet = mTweets.get(position);
 
@@ -55,9 +72,36 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         holder.tvUserName.setText("@" + tweet.user.screenName);
         holder.tvBody.setText(tweet.body);
         holder.tvName.setText(tweet.user.name);
+
         holder.tvCreated.setText(getRelativeTimeAgo(tweet.createdAt));
 
-        Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
+        // set circle bitmap
+
+        Glide.with(context).load(tweet.user.profileImageUrl).transform(new CircleTransform(context)).into(holder.ivProfileImage);
+
+        if (tweet.mediaUrl != null){
+            Glide.with(context).load(tweet.mediaUrl).into(holder.tlMedia);
+        }
+        else{
+            holder.tlMedia.setVisibility(View.GONE);
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // int position = getAdapterPosition();
+                // make sure the position is valid, i.e. actually exists in the view
+                if (positionm != RecyclerView.NO_POSITION) {
+                    // get the tweet at the position, this won't work if the class is static
+                    Tweet tweet = mTweets.get(positionm);            // create intent for the new activity
+                    Intent intent = new Intent(context, TweetDetails.class);
+                    // serialize the movie using parceler, use its short name as a key
+                    intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                    // show the activity
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
     @Override
     public int getItemCount(){
@@ -65,15 +109,23 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     }
 
     // create ViewHolder class
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivProfileImage;
         public TextView tvUserName;
         public TextView tvBody;
         public TextView tvName;
         public TextView tvCreated;
         public ImageView dtreply;
+        public ImageView tlFavorite;
+        public ImageView tlRetweet;
+        public ImageView tlMedia;
+        public String mediaUrl;
 
-        public ViewHolder(View itemView){
+        TwitterClient client;
+
+
+
+        public ViewHolder(View itemView) {
             super(itemView);
             // perform findViewById lookups
 
@@ -83,6 +135,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             tvName = (TextView) itemView.findViewById(R.id.tvName);
             dtreply = (ImageView) itemView.findViewById(R.id.dtreply);
             tvCreated = (TextView) itemView.findViewById(R.id.tvCreated);
+            tlFavorite = (ImageView) itemView.findViewById(R.id.tlFavorite);
+            tlRetweet = (ImageView) itemView.findViewById(R.id.tlRetweet);
+            tlMedia = (ImageView) itemView.findViewById(R.id.tlMedia);
+
+            client = TwitterApp.getRestClient();
             dtreply.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -93,8 +150,73 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                     ((TimelineActivity) context).startActivity(i);
                 }
             });
+            tlFavorite.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    int position = getAdapterPosition();
+                    Tweet tweet = mTweets.get(position);
+                    client.favoriteTweet(tweet.uid, new JsonHttpResponseHandler(){
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            Log.d("TwitterClient", response.toString());
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            Log.d("TwitterClient", responseString);
+                            throwable.printStackTrace();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            Log.d("TwitterClient", errorResponse.toString());
+                            throwable.printStackTrace();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                            Log.d("TwitterClient", errorResponse.toString());
+                            throwable.printStackTrace();
+                        }
+                    });
+                }
+            });
+            tlRetweet.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    int position = getAdapterPosition();
+                    Tweet tweet = mTweets.get(position);
+                    client.retweetTweet(tweet.uid, new JsonHttpResponseHandler(){
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            Log.d("TwitterClient", response.toString());
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            Log.d("TwitterClient", responseString);
+                            throwable.printStackTrace();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            Log.d("TwitterClient", errorResponse.toString());
+                            throwable.printStackTrace();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                            Log.d("TwitterClient", errorResponse.toString());
+                            throwable.printStackTrace();
+                        }
+                    });
+                }
+            });
         }
-        protected void onActivityResult(int requestCode,int resultCode, Intent data) {
+
+
+    }
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             // REQUEST_CODE is defined above
             if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
                 // Extract name value from result extras
@@ -103,25 +225,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                 notifyItemInserted(0);
             }
         }
-        @Override
-        public void onClick(View v) {
-            // gets item position
-            int position = getAdapterPosition();
-            // make sure the position is valid, i.e. actually exists in the view
-            if (position != RecyclerView.NO_POSITION) {
-                // get the tweet at the position, this won't work if the class is static
-                Tweet tweet = mTweets.get(position);            // create intent for the new activity
-                Intent intent = new Intent(context, TweetDetails.class);
-                // serialize the movie using parceler, use its short name as a key
-                intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-                // show the activity
-                context.startActivity(intent);
-            }
-        }
-
-    }
-
-
     public String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
@@ -143,6 +246,28 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     public void clear() {
         mTweets.clear();
         notifyDataSetChanged();
+    }
+    private Bitmap getCircleBitmap(Bitmap bitmap) {
+        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(output);
+
+        final int color = Color.RED;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawOval(rectF, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        bitmap.recycle();
+
+        return output;
     }
 
 }

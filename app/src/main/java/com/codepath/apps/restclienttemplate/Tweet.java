@@ -15,6 +15,8 @@ public class Tweet {
     public long uid; // database ID for the tweet
     public String createdAt;
     public User user;
+    public Entities entities;
+    public String mediaUrl;
 
     // deserialize the JSON
     public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {
@@ -24,8 +26,14 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
+        tweet.entities = Entities.fromJSON(jsonObject.getJSONObject("entities"));
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+        if ((jsonObject.has("entities")) && (jsonObject.getJSONObject("entities").has("media"))){
+            tweet.mediaUrl = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url");
+        }
         return tweet;
     }
+
 }
+
 

@@ -34,42 +34,76 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/dtProfilePicture" />
+        android:layout_below="@+id/dtProfilePicture"
+        android:autoLink="all"
+        android:linksClickable="true"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="13dp"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout"
+        android:layout_below="@+id/dtmedia">
+
+        <ImageView
+            android:id="@+id/dtreply"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/dtBody"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/dtProfilePicture"
+            app:srcCompat="@drawable/replyicon" />
+
+        <ImageView
+            android:id="@+id/dtRetweet"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignBottom="@+id/dtHeart"
+            android:layout_marginEnd="20dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="10dp"
+            android:layout_toStartOf="@+id/dtHeart"
+            android:layout_weight="0.16"
+            app:srcCompat="@drawable/retweet" />
+
+        <ImageView
+            android:id="@+id/dtHeart"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/dtBody"
+            android:layout_marginEnd="61dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toStartOf="@+id/dtMessage"
+            android:layout_weight="0.12"
+            app:srcCompat="@drawable/heart" />
+
+        <ImageView
+            android:id="@+id/dtMessage"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/dtHeart"
+            android:layout_marginEnd="85dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/message" />
+    </LinearLayout>
 
     <ImageView
-        android:id="@+id/dtreply"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        app:srcCompat="@drawable/replyicon"
+        android:id="@+id/dtmedia"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_below="@+id/dtBody"
-        android:layout_toEndOf="@+id/dtProfilePicture" />
-
-    <ImageView
-        android:id="@+id/dtHeart"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        app:srcCompat="@drawable/heart"
-
-        android:layout_marginEnd="61dp"
-        android:layout_below="@+id/dtBody"
-        android:layout_toStartOf="@+id/dtMessage" />
-
-    <ImageView
-        android:id="@+id/dtMessage"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        app:srcCompat="@drawable/message"
-        android:layout_marginEnd="85dp"
-        android:layout_alignTop="@+id/dtHeart"
-        android:layout_alignParentEnd="true" />
-
-    <ImageView
-        android:id="@+id/dtRetweet"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignBottom="@+id/dtHeart"
-        android:layout_marginEnd="46dp"
-        android:layout_toStartOf="@+id/dtHeart"
-        app:srcCompat="@drawable/retweet" />
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@android:color/black" />
 
 </RelativeLayout>
