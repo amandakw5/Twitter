@@ -78,7 +78,18 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         // set circle bitmap
 
         Glide.with(context).load(tweet.user.profileImageUrl).transform(new CircleTransform(context)).into(holder.ivProfileImage);
-
+        if (tweet.favorited){
+            Glide.with(context).load(R.drawable.hearted).into(holder.tlFavorite);
+        }
+        else{
+            Glide.with(context).load(R.drawable.heart).into(holder.tlFavorite);
+        }
+        if (tweet.retweeted){
+            Glide.with(context).load(R.drawable.ic_vector_retweet).into(holder.tlRetweet);
+        }
+        else{
+            Glide.with(context).load(R.drawable.retweet).into(holder.tlRetweet);
+        }
         if (tweet.mediaUrl != null){
             Glide.with(context).load(tweet.mediaUrl).into(holder.tlMedia);
         }
@@ -121,9 +132,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public ImageView tlRetweet;
         public ImageView tlMedia;
         public String mediaUrl;
-
-
-
 
         public ViewHolder(View itemView) {
             super(itemView);

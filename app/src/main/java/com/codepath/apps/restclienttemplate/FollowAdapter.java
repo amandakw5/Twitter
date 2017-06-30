@@ -49,6 +49,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.ViewHolder
     public int getItemCount() {
         return users.size();
     }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView fvProfilePicture;
         public TextView fvUserName;

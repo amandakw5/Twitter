@@ -17,6 +17,8 @@ public class Tweet {
     public User user;
     public Entities entities;
     public String mediaUrl;
+    public boolean favorited;
+    public boolean retweeted;
 
     // deserialize the JSON
     public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {
@@ -28,6 +30,8 @@ public class Tweet {
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.entities = Entities.fromJSON(jsonObject.getJSONObject("entities"));
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+        tweet.favorited = jsonObject.getBoolean("favorited");
+        tweet.retweeted = jsonObject.getBoolean("retweeted");
         if ((jsonObject.has("entities")) && (jsonObject.getJSONObject("entities").has("media"))){
             tweet.mediaUrl = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url");
         }
