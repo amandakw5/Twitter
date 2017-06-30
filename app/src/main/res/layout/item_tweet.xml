@@ -20,7 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/tvBody"
-        android:text="testing" />
+        android:text="testing"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tvBody"
@@ -71,7 +73,7 @@
         <ImageView
             android:id="@+id/dtreply"
             android:layout_width="20dp"
-            android:layout_height="26dp"
+            android:layout_height="20dp"
             android:layout_below="@+id/tvBody"
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/ivProfileImage"
@@ -81,7 +83,7 @@
         <ImageView
             android:id="@+id/tlRetweet"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginTop="10dp"
             android:layout_weight="0.04"
             app:srcCompat="@drawable/retweet" />
@@ -89,7 +91,7 @@
         <ImageView
             android:id="@+id/tlFavorite"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginTop="10dp"
             android:layout_weight="0.04"
             app:srcCompat="@drawable/heart" />
@@ -97,7 +99,7 @@
         <ImageView
             android:id="@+id/tlMessage"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginTop="10dp"
             android:layout_weight="0.04"
             app:srcCompat="@drawable/message" />

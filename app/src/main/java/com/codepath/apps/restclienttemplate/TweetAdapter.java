@@ -112,6 +112,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView ivProfileImage;
         public TextView tvUserName;
+        TwitterClient client;
         public TextView tvBody;
         public TextView tvName;
         public TextView tvCreated;
@@ -121,7 +122,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public ImageView tlMedia;
         public String mediaUrl;
 
-        TwitterClient client;
 
 
 
@@ -210,6 +210,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                             throwable.printStackTrace();
                         }
                     });
+                }
+            });
+            ivProfileImage.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    int position = getAdapterPosition();
+                    Tweet tweet = mTweets.get(position);
+                    User user = tweet.user;
+                    Intent i = new Intent(context, ProfileActivity.class);
+                    i.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+                    ((TimelineActivity) context).startActivity(i);
                 }
             });
         }

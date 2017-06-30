@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/fvProfilePicture"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="15dp"
+        app:srcCompat="@android:color/black" />
+
+    <TextView
+        android:id="@+id/fvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="TextView"
+        android:layout_alignTop="@+id/fvProfilePicture"
+        android:layout_toEndOf="@+id/fvProfilePicture"
+        android:textStyle="bold"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:id="@+id/fvUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="TextView"
+        android:layout_below="@+id/fvName"
+        android:layout_toEndOf="@+id/fvProfilePicture" />
+
+    <TextView
+        android:id="@+id/fvBio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/fvUserName"
+        android:layout_below="@+id/fvUserName"
+        android:layout_marginLeft="0dp" />
+</RelativeLayout>
