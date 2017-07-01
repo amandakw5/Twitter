@@ -17,21 +17,23 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class TweetDetails extends AppCompatActivity {
-    ImageView reply;
+    @BindView(R.id.dtreply) ImageView reply;
     Tweet tweet;
     Context context;
-    ImageView dtProfilePicture;
-    TextView dtName;
-    TextView dtUserName;
-    TextView dtBody;
-    ImageView dtHeart;
+    @BindView(R.id.dtProfilePicture) ImageView dtProfilePicture;
+    @BindView(R.id.dtName) TextView dtName;
+    @BindView(R.id.dtUserName) TextView dtUserName;
+    @BindView(R.id.dtBody) TextView dtBody;
+    @BindView(R.id.dtHeart) ImageView dtHeart;
     TwitterClient client;
     String imageUrl;
-    ImageView dtRetweet;
-    ImageView dtmedia;
+    @BindView(R.id.dtRetweet) ImageView dtRetweet;
+    @BindView(R.id.dtmedia) ImageView dtmedia;
     String mediaUrl;
     private final int REQUEST_CODE = 20;
 
@@ -42,8 +44,7 @@ public class TweetDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_details);
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
-        dtProfilePicture = (ImageView) findViewById(R.id.dtProfilePicture);
-        dtmedia = (ImageView) findViewById(R.id.dtmedia);
+        ButterKnife.bind(this);
         mediaUrl = tweet.mediaUrl;
         imageUrl = tweet.user.profileImageUrl;
         Glide.with(context)
@@ -59,15 +60,10 @@ public class TweetDetails extends AppCompatActivity {
             dtmedia.setVisibility(View.GONE);
         }
 
-        reply = (ImageView) findViewById(R.id.dtreply);
-        dtUserName = (TextView) findViewById(R.id.dtUserName);
-        dtName = (TextView) findViewById(R.id.dtName);
-        dtBody = (TextView) findViewById(R.id.dtBody);
+
         dtName.setText(tweet.user.name);
         dtUserName.setText("@" + tweet.user.screenName);
         dtBody.setText(tweet.body);
-        dtHeart = (ImageView) findViewById(R.id.dtHeart);
-        dtRetweet = (ImageView) findViewById(R.id.dtRetweet);
 
         reply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,33 +77,67 @@ public class TweetDetails extends AppCompatActivity {
         dtHeart.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                client.favoriteTweet(tweet.uid, new JsonHttpResponseHandler(){
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Log.d("TwitterClient", response.toString());
-                        Toast.makeText(TweetDetails.this, "Favorited", Toast.LENGTH_SHORT).show();
-                    }
+                if (tweet.favorited) {
+                    Glide.with(context).load(R.drawable.heart).into(dtHeart);
+                    client.unfavoriteTweet(tweet.uid, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            Log.d("TwitterClient", response.toString());
+                        }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Log.d("TwitterClient", responseString);
-                        throwable.printStackTrace();
-                    }
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            Log.d("TwitterClient", responseString);
+                            throwable.printStackTrace();
+                        }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                        Log.d("TwitterClient", errorResponse.toString());
-                        throwable.printStackTrace();
-                    }
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            Log.d("TwitterClient", errorResponse.toString());
+                            throwable.printStackTrace();
+                        }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                        Log.d("TwitterClient", errorResponse.toString());
-                        throwable.printStackTrace();
-                    }
-                });
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                            Log.d("TwitterClient", errorResponse.toString());
+                            throwable.printStackTrace();
+                        }
+                    });
+                    tweet.favorited = false;
+                } else {
+                    Glide.with(context).load(R.drawable.hearted).into(dtHeart);
+                    client.favoriteTweet(tweet.uid, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            Log.d("TwitterClient", response.toString());
+                        }
+
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            Log.d("TwitterClient", responseString);
+                            throwable.printStackTrace();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            Log.d("TwitterClient", errorResponse.toString());
+                            throwable.printStackTrace();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                            Log.d("TwitterClient", errorResponse.toString());
+                            throwable.printStackTrace();
+                        }
+                    });
+                    tweet.favorited = true;
+                }
             }
         });
+
+
+
         dtRetweet.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

@@ -63,14 +63,33 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("id", id);
 		client.post(apiUrl, params, handler);
 	}
+	public void unfavoriteTweet(long id, AsyncHttpResponseHandler handler){
+		String apiUrl = getApiUrl("favorites/destroy.json");
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		client.post(apiUrl, params, handler);
+	}
 	public void retweetTweet(long id, AsyncHttpResponseHandler handler){
 		String apiUrl = getApiUrl("statuses/retweet.json");
 		RequestParams params = new RequestParams();
 		params.put("id", id);
 		client.post(apiUrl, params, handler);
 	}
+	public void unretweetTweet(long id, AsyncHttpResponseHandler handler){
+		String apiUrl = getApiUrl("statuses/unretweet.json");
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		client.post(apiUrl, params, handler);
+	}
 	public void getFollowers(long id, int cursor, AsyncHttpResponseHandler handler){
 		String apiUrl = getApiUrl("followers/list.json");
+		RequestParams params = new RequestParams();
+		params.put("cursor", cursor);
+		params.put("user_id", id);
+		client.get(apiUrl, params, handler);
+	}
+	public void getFriends(long id, int cursor, AsyncHttpResponseHandler handler){
+		String apiUrl = getApiUrl("friends/list.json");
 		RequestParams params = new RequestParams();
 		params.put("cursor", cursor);
 		params.put("user_id", id);

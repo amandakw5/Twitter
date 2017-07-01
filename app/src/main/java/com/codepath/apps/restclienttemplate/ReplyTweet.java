@@ -14,12 +14,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import butterknife.BindView;
 import cz.msebera.android.httpclient.Header;
 
 public class ReplyTweet extends AppCompatActivity {
 
     TwitterClient client;
-    EditText etName;
+    @BindView(R.id.tweetbox) EditText etName;
     Tweet tweet;
 
     @Override
@@ -28,7 +29,6 @@ public class ReplyTweet extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reply_tweet);
         tweet = Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
-        etName = (EditText) findViewById(R.id.tweetbox);
         etName.setText("@" + tweet.user.name);
     }
     public void onSubmit(View v) {

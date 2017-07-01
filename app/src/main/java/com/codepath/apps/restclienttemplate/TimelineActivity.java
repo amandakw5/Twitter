@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -22,7 +22,10 @@ import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 import static com.codepath.apps.restclienttemplate.R.id.swipeContainer;
@@ -32,22 +35,22 @@ public class TimelineActivity extends AppCompatActivity {
     TwitterClient client;
     TweetAdapter tweetAdapter; // data source
     ArrayList<Tweet> tweets;
-    RecyclerView rvTweets;
+    @BindView(R.id.rvTweet) RecyclerView rvTweets;
     private final int REQUEST_CODE = 20;
     Tweet newtweet;
     private SwipeRefreshLayout refreshLayout;
     MenuItem miActionProgressItem;
-    ImageView reply;
+    //@BindView(R.id.dtreply) ImageView reply;
     private EndlessRecyclerViewScrollListener scrollListener;
+    private final Handler handler = new Handler();
+    private Timer autoUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+        ButterKnife.bind(this);
         client = TwitterApp.getRestClient();
-
-        // find the RecyclerView
-        rvTweets = (RecyclerView) findViewById(R.id.rvTweet);
         // init the arraylist(data sourxe)
         tweets = new ArrayList<>();
         // construct the adapterb from this datasource
@@ -56,7 +59,6 @@ public class TimelineActivity extends AppCompatActivity {
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         // set the adapter
         rvTweets.setAdapter(tweetAdapter);
-        reply = (ImageView) findViewById(R.id.dtreply);
         populateTimeline();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvTweets.setLayoutManager(linearLayoutManager);
@@ -82,6 +84,7 @@ public class TimelineActivity extends AppCompatActivity {
                 hideProgressBar();
             }
         });
+       // doTheAutoRefresh();
     }
     // Append the next page of data into the adapter
     // This method probably sends out a network request and appends new data items to your adapter.
@@ -226,4 +229,18 @@ public class TimelineActivity extends AppCompatActivity {
             rvTweets.scrollToPosition(0);
         }
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        populateTimeline();
+    }
+    private void doTheAutoRefresh() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                populateTimeline();
+            }
+        }, 1000);
+    }
+
 }

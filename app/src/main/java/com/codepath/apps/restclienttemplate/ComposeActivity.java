@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -20,9 +19,6 @@ import cz.msebera.android.httpclient.Header;
 public class ComposeActivity extends AppCompatActivity {
 
     TwitterClient client;
-    EditText typeMessageToPost;
-    TextView counter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

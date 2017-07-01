@@ -47,12 +47,21 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent i = new Intent(ProfileActivity.this, FollowActivity.class);
+                i.putExtra("f", 1);
                 i.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
                 startActivity(i);
-
-
             }
         });
+        following.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent i = new Intent(ProfileActivity.this, FollowActivity.class);
+                i.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+                i.putExtra("f", 2);
+                startActivity(i);
+            }
+        });
+
     }
 
 }

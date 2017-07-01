@@ -26,15 +26,18 @@ public class FollowActivity extends AppCompatActivity {
     User user;
     private EndlessRecyclerViewScrollListener scrollListener;
     public int cursor;
+    public int x;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        rvFollow = (RecyclerView) findViewById(R.id.rvFollow);
         client = TwitterApp.getRestClient();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follow);
         user = (User) Parcels.unwrap(getIntent().getParcelableExtra(User.class.getSimpleName()));
+//        x = (int) Parcels.unwrap(getIntent().getParcelableExtra("f"));
         // find the RecyclerView
-        rvFollow = (RecyclerView) findViewById(R.id.rvFollow);
         // init the arraylist(data sourxe)
         follows = new ArrayList<>();
         users = new JSONArray();
@@ -61,47 +64,94 @@ public class FollowActivity extends AppCompatActivity {
 
     }
     public void loadNextDataFromApi(int c) {
-        client.getFollowers(user.uid, -1, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("TwitterClient", response.toString());
-                try {
-                    users = response.getJSONArray("users");
-                    for (int i = 0; i < users.length(); i++) {
-                        // convert each object to a Tweet model
-                        // add the Tweet model to our data source
-                        // notify the adapter that we've added an item
-                        try {
-                            User u = User.fromJSON(users.getJSONObject(i));
-                            follows.add(u);
-                            FollowAdapter.notifyItemInserted(follows.size() - 1);
-                           // response.getInt("next_cursor");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+       // if (x == 1) {
+            client.getFollowers(user.uid, -1, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Log.d("TwitterClient", response.toString());
+                    try {
+                        users = response.getJSONArray("users");
+                        for (int i = 0; i < users.length(); i++) {
+                            // convert each object to a Tweet model
+                            // add the Tweet model to our data source
+                            // notify the adapter that we've added an item
+                            try {
+                                User u = User.fromJSON(users.getJSONObject(i));
+                                follows.add(u);
+                                FollowAdapter.notifyItemInserted(follows.size() - 1);
+                                // response.getInt("next_cursor");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("TwitterClient", responseString);
-                throwable.printStackTrace();
-            }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("TwitterClient", responseString);
+                    throwable.printStackTrace();
+                }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("TwitterClient", errorResponse.toString());
+                    throwable.printStackTrace();
+                }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    Log.d("TwitterClient", errorResponse.toString());
+                    throwable.printStackTrace();
+                }
+            });
+//        }
+//        else{
+//            client.getFriends(user.uid, -1, new JsonHttpResponseHandler() {
+//                @Override
+//                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                    Log.d("TwitterClient", response.toString());
+//                    try {
+//                        users = response.getJSONArray("users");
+//                        for (int i = 0; i < users.length(); i++) {
+//                            // convert each object to a Tweet model
+//                            // add the Tweet model to our data source
+//                            // notify the adapter that we've added an item
+//                            try {
+//                                User u = User.fromJSON(users.getJSONObject(i));
+//                                follows.add(u);
+//                                FollowAdapter.notifyItemInserted(follows.size() - 1);
+//                                // response.getInt("next_cursor");
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                    Log.d("TwitterClient", responseString);
+//                    throwable.printStackTrace();
+//                }
+//
+//                @Override
+//                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                    Log.d("TwitterClient", errorResponse.toString());
+//                    throwable.printStackTrace();
+//                }
+//
+//                @Override
+//                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+//                    Log.d("TwitterClient", errorResponse.toString());
+//                    throwable.printStackTrace();
+//                }
+//            });
+        }
     }
-}
+
+

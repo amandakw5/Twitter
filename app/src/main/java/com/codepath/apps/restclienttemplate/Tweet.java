@@ -8,6 +8,7 @@ import org.parceler.Parcel;
  * Created by awestort on 6/26/17.
  */
 @Parcel
+
 public class Tweet {
 
     // list out the attributes
@@ -15,7 +16,6 @@ public class Tweet {
     public long uid; // database ID for the tweet
     public String createdAt;
     public User user;
-    public Entities entities;
     public String mediaUrl;
     public boolean favorited;
     public boolean retweeted;
@@ -28,7 +28,6 @@ public class Tweet {
         tweet.body = jsonObject.getString("text");
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
-        tweet.entities = Entities.fromJSON(jsonObject.getJSONObject("entities"));
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         tweet.favorited = jsonObject.getBoolean("favorited");
         tweet.retweeted = jsonObject.getBoolean("retweeted");
