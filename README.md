@@ -51,7 +51,7 @@ The following **additional** features are implemented:
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
-https://github.com/amandakw5/Twitter/blob/master/final.gif
+https://github.com/amandakw5/Twitter/blob/master/ThisIsMyGif.gif
 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
