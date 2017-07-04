@@ -1,0 +1,283 @@
+package com.codepath.apps.restclienttemplate.fragments;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+
+import com.codepath.apps.restclienttemplate.ComposeActivity;
+import com.codepath.apps.restclienttemplate.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.Tweet;
+import com.codepath.apps.restclienttemplate.TweetAdapter;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.Timer;
+
+import static com.codepath.apps.restclienttemplate.R.id.swipeContainer;
+
+/**
+ * Created by awestort on 7/3/17.
+ */
+
+
+public class TweetsListFragment extends Fragment {
+    TweetAdapter tweetAdapter; // data source
+    ArrayList<Tweet>tweets;
+    RecyclerView rvTweets;
+
+    private final int REQUEST_CODE = 20;
+    Tweet newtweet;
+    private SwipeRefreshLayout refreshLayout;
+    MenuItem miActionProgressItem;
+    ImageView reply;
+    private EndlessRecyclerViewScrollListener scrollListener;
+    private final Handler handler = new Handler();
+    private Timer autoUpdate;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragments_tweets_list, container, false);
+        setHasOptionsMenu(true);
+        rvTweets = (RecyclerView) v.findViewById(R.id.rvTweet);
+        reply = (ImageView) v.findViewById(R.id.dtreply);
+        //client = TwitterApp.getRestClient();
+        // init the arraylist(data sourxe)
+        tweets = new ArrayList<>();
+//        // construct the adapterb from this datasource
+        tweetAdapter = new TweetAdapter(tweets);
+//        // RecyclerView setup (layout manager, use adapter)
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        rvTweets.setLayoutManager(linearLayoutManager);
+//        // set the adapter
+        rvTweets.setAdapter(tweetAdapter);
+//        populateTimeline();
+
+        rvTweets.setLayoutManager(linearLayoutManager);
+        // Retain an instance so that you can call `resetState()` for fresh searches
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+
+                loadNextDataFromApi(page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvTweets.addOnScrollListener(scrollListener);
+        refreshLayout = (SwipeRefreshLayout) v.findViewById(swipeContainer);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showProgressBar();
+                tweetAdapter.clear();
+                populateTimeline();
+                refreshLayout.setRefreshing(false);
+                hideProgressBar();
+            }
+        });
+        // doTheAutoRefresh();
+        return v;
+    }
+
+    public void populateTimeline() {
+    }
+    public void showProgressBar() {
+        // Show progress item
+        miActionProgressItem.setVisible(true);
+    }
+
+    public void hideProgressBar() {
+        // Hide progress item
+        miActionProgressItem.setVisible(false);
+    }
+    public void loadNextDataFromApi(int page) {
+    }
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        //Extract the action-view from the menu item
+        ProgressBar v = (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+        // Return to finish
+    }
+
+    public void addItems(JSONArray response){
+
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.login, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.theicon:
+                Intent i = new Intent(getContext(), ComposeActivity.class);
+                i.putExtra("mode", 2); // pass arbitrary data to launched activity
+                startActivityForResult(i, REQUEST_CODE);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    // Append the next page of data into the adapter
+    // This method probably sends out a network request and appends new data items to your adapter.
+//    public void loadNextDataFromApi(int offset) {
+//        client.getHomeTimeline(0, offset * 25, new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                Log.d("TwitterClient", response.toString());
+//            }
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                // Log.d("TwitterClient", response.toString());
+//                // iterate through the JSON array
+//                // for each entry, deserialize the JSON object
+//                for (int i = 0; i < response.length(); i++){
+//                    // convert each objectprivate void loadNextDataFromApi(int ) {
+    // to a Tweet model
+//                    // add the Tweet model to our data source
+//                    // notify the adpter that we've added an item
+//                    try {
+//                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
+//                        tweets.add(tweet);
+//                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                Log.d("TwitterClient", responseString);
+//                throwable.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                Log.d("TwitterClient", errorResponse.toString());
+//                throwable.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+//                Log.d("TwitterClient", errorResponse.toString());
+//                throwable.printStackTrace();
+//            }
+//        });
+//    }
+
+
+
+//    private void populateTimeline() {
+//        client.getHomeTimeline(0, 1, new JsonHttpResponseHandler(){
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                Log.d("TwitterClient", response.toString());
+//            }
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                // Log.d("TwitterClient", response.toString());
+//                // iterate through the JSON array
+//                // for each entry, deserialize the JSON object
+//                for (int i = 0; i < response.length(); i++){
+//                    // convert each object to a Tweet model
+//                    // add the Tweet model to our data source
+//                    // notify the adpter that we've added an item
+//                    try {
+//                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
+//                        tweets.add(tweet);
+//                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+//                Log.d("TwitterClient", responseString);
+//                throwable.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                Log.d("TwitterClient", errorResponse.toString());
+//                throwable.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+//                Log.d("TwitterClient", errorResponse.toString());
+//                throwable.printStackTrace();
+//            }
+//        });
+//    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.login, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle presses on the action bar items
+//        switch (item.getItemId()) {
+//            case R.id.theicon:
+//                Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
+//                i.putExtra("mode", 2); // pass arbitrary data to launched activity
+//                startActivityForResult(i, REQUEST_CODE);
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        // REQUEST_CODE is defined above
+//        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+//            // Extract name value from result extras
+//            newtweet = Parcels.unwrap(data.getParcelableExtra("twee"));
+//            Toast.makeText(this, "tweeted", Toast.LENGTH_SHORT).show();
+//            tweets.add(0, newtweet);
+//            tweetAdapter.notifyItemInserted(0);
+//            rvTweets.scrollToPosition(0);
+//        }
+//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        populateTimeline();
+    }
+    private void doTheAutoRefresh() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                populateTimeline();
+            }
+        }, 1000);
+    }
+}

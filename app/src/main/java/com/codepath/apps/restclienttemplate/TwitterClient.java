@@ -95,6 +95,14 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("user_id", id);
 		client.get(apiUrl, params, handler);
 	}
+	public void getMentionsTimeline(int i, int since, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("count", 25);
+		params.put("since_id", since);
+		client.get(apiUrl, params, handler);
+	}
 
 
 
