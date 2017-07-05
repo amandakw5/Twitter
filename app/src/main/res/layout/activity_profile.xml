@@ -7,37 +7,37 @@
     tools:context="com.codepath.apps.restclienttemplate.ProfileActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
         android:id="@+id/rlUserHeader"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/pfName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/pfProfilePicture"
             android:layout_marginLeft="15dp"
             android:text="TextView"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="51dp"
-            android:layout_below="@+id/pfProfilePicture"
-            android:layout_alignParentEnd="true" />
+            tools:layout_editor_absoluteY="51dp" />
 
         <TextView
             android:id="@+id/Followers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="94dp"
-            tools:layout_editor_absoluteY="85dp"
             android:layout_alignBaseline="@+id/following"
             android:layout_alignBottom="@+id/following"
+            android:layout_marginStart="39dp"
             android:layout_toEndOf="@+id/following"
-            android:layout_marginStart="39dp" />
+            android:text="TextView"
+            tools:layout_editor_absoluteX="94dp"
+            tools:layout_editor_absoluteY="85dp" />
 
         <TextView
             android:id="@+id/pfUserName"
@@ -66,27 +66,27 @@
             android:id="@+id/pfBio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:layout_alignStart="@+id/pfUserName"
             android:layout_below="@+id/pfUserName"
-            android:layout_alignStart="@+id/pfUserName" />
+            android:text="TextView" />
 
         <TextView
             android:id="@+id/following"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/pfBio"
+            android:layout_below="@+id/pfBio"
             android:text="TextView"
             tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="85dp"
-            android:layout_below="@+id/pfBio"
-            android:layout_alignStart="@+id/pfBio" />
+            tools:layout_editor_absoluteY="85dp" />
     </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/flContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rlUserHeader"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/rlUserHeader">
 
     </FrameLayout>
 
