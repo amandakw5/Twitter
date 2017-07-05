@@ -2,13 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <item
-            android:id="@+id/miActionProgress"
-            android:title="Loading..."
-            android:visible="false"
-            android:orderInCategory="100"
-            app:showAsAction="always"
-            app:actionLayout="@layout/action_view_progress" />
+    <item
+        android:id="@+id/menuProfile"
+        android:icon="@drawable/ic_vector_person"
+        android:onClick="onProfileView"
+        android:title="Item"
+        app:showAsAction="always" />
     <item
         android:id="@+id/theicon"
         android:enabled="true"
@@ -16,6 +15,7 @@
         android:visible="true"
         app:showAsAction="always">
     </item>
+
 
 
 </menu>

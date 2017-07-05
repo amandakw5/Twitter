@@ -6,63 +6,88 @@
     android:layout_height="match_parent"
     tools:context="com.codepath.apps.restclienttemplate.ProfileActivity">
 
-    <ImageView
-        android:id="@+id/pfProfilePicture"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="15dp"
-        app:srcCompat="@android:color/black"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp" />
-
-    <TextView
-        android:id="@+id/pfName"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/pfProfilePicture"
-        android:layout_marginLeft="15dp"
-        android:text="TextView"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="51dp" />
+        android:layout_height="150dp"
+        android:id="@+id/rlUserHeader"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
-    <TextView
-        android:id="@+id/pfUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/pfName"
-        android:layout_marginLeft="15dp"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="68dp" />
+        <TextView
+            android:id="@+id/pfName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="TextView"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="51dp"
+            android:layout_below="@+id/pfProfilePicture"
+            android:layout_alignParentEnd="true" />
 
-    <TextView
-        android:id="@+id/following"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/pfUserName"
-        android:layout_marginLeft="15dp"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="85dp" />
+        <TextView
+            android:id="@+id/Followers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="94dp"
+            tools:layout_editor_absoluteY="85dp"
+            android:layout_alignBaseline="@+id/following"
+            android:layout_alignBottom="@+id/following"
+            android:layout_toEndOf="@+id/following"
+            android:layout_marginStart="39dp" />
 
-    <TextView
-        android:id="@+id/Followers"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/following"
-        android:layout_alignBottom="@+id/following"
-        android:layout_marginStart="50dp"
-        android:layout_toEndOf="@+id/following"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="94dp"
-        tools:layout_editor_absoluteY="85dp" />
+        <TextView
+            android:id="@+id/pfUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/pfName"
+            android:layout_marginLeft="15dp"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="68dp" />
+
+        <ImageView
+            android:id="@+id/pfProfilePicture"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            app:srcCompat="@android:color/black"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="1dp" />
+
+        <TextView
+            android:id="@+id/pfBio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_below="@+id/pfUserName"
+            android:layout_alignStart="@+id/pfUserName" />
+
+        <TextView
+            android:id="@+id/following"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="85dp"
+            android:layout_below="@+id/pfBio"
+            android:layout_alignStart="@+id/pfBio" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rlUserHeader"
+        android:layout_centerHorizontal="true">
+
+    </FrameLayout>
+
 </RelativeLayout>

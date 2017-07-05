@@ -2,14 +2,6 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.icu.text.SimpleDateFormat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -45,11 +37,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     Context context;
     private final int REQUEST_CODE = 20;
     Tweet newtweet;
+    private TweetAdapterListener mListener;
 
+    public interface TweetAdapterListener {
+        public void onItemsSelected(View view, int position);
+    }
 
     // pass in the tweets array in the constructor
-    public TweetAdapter(List<Tweet> tweets) {
+    public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener) {
         mTweets = tweets;
+        mListener = listener;
     }
     // for each row, inflate the layout and cache references into ViewHolder
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -129,7 +126,25 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             tlRetweet = (ImageView) itemView.findViewById(R.id.tlRetweet);
             tlMedia = (ImageView) itemView.findViewById(R.id.tlMedia);
             client = TwitterApp.getRestClient();
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view){
+                    if (mListener != null){
+                        //get the position of row element
+                        int position = getAdapterPosition();
+                        // fire the listnener callback
+                        if (position != RecyclerView.NO_POSITION) {
+                            // get the tweet at the position, this won't work if the class is static
+                            Tweet tweet = mTweets.get(position);            // create intent for the new activity
+                            Intent intent = new Intent(context, TweetDetails.class);
+                            // serialize the movie using parceler, use its short name as a key
+                            intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                            // show the activity
+                            context.startActivity(intent);
+                        }
+                    }
+                }
+            });
 
             dtreply.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -165,7 +180,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                                 Log.d("TwitterClient", errorResponse.toString());
                                 throwable.printStackTrace();
                             }
-
                             @Override
                             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                                 Log.d("TwitterClient", errorResponse.toString());
@@ -271,9 +285,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     Tweet tweet = mTweets.get(position);
-                    User user = tweet.user;
+                   // User user = tweet.user;
                     Intent i = new Intent(context, ProfileActivity.class);
-                    i.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+                    i.putExtra("screenName", tweet.user.screenName);
                     ((TimelineActivity) context).startActivity(i);
                 }
             });
@@ -327,27 +341,4 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
         notifyDataSetChanged();
     }
-    private Bitmap getCircleBitmap(Bitmap bitmap) {
-        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(output);
-
-        final int color = Color.RED;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawOval(rectF, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        bitmap.recycle();
-
-        return output;
-    }
-
 }

@@ -18,6 +18,7 @@ public class User {
     public String profileImageUrl;
     public int followers_count;
     public int following;
+    public String bio;
 
     // deserialize the JSON
     public static User fromJSON(JSONObject json) throws JSONException {
@@ -30,6 +31,7 @@ public class User {
         user.profileImageUrl = json.getString("profile_image_url");
         user.followers_count = json.getInt("followers_count");
         user.following = json.getInt("friends_count");
+        user.bio = json.getString("description");
         return user;
     }
 }

@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.codepath.apps.restclienttemplate.Tweet;
 import com.codepath.apps.restclienttemplate.TwitterApp;
 import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
@@ -27,7 +25,6 @@ public class HomeTimelineFragment extends TweetsListFragment {
         super.onCreate(savedInstanceState);
         client = TwitterApp.getRestClient();
         populateTimeline();
-
     }
     @Override
     public void populateTimeline() {
@@ -43,18 +40,18 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 // Log.d("TwitterClient", response.toString());
                 // iterate through the JSON array
                 // for each entry, deserialize the JSON object
-                for (int i = 0; i < response.length(); i++){
-//                    // convert each object to a Tweet model
-//                    // add the Tweet model to our data source
-//                    // notify the adpter that we've added an item
-                   try {
-                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
-                        tweets.add(tweet);
-                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+//                for (int i = 0; i < response.length(); i++){
+////                    // convert each object to a Tweet model
+////                    // add the Tweet model to our data source
+////                    // notify the adpter that we've added an item
+//                   try {
+//                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
+//                        tweets.add(tweet);
+//                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
             }
 
             @Override
@@ -88,18 +85,19 @@ public class HomeTimelineFragment extends TweetsListFragment {
                 // Log.d("TwitterClient", response.toString());
                 // iterate through the JSON array
                 // for each entry, deserialize the JSON object
-                for (int i = 0; i < response.length(); i++){
-                    // convert each object to a Tweet model
-                    // add the Tweet model to our data source
-                    // notify the adpter that we've added an item
-                    try {
-                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
-                        tweets.add(tweet);
-                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+                addItems(response);
+//                for (int i = 0; i < response.length(); i++){
+//                    // convert each object to a Tweet model
+//                    // add the Tweet model to our data source
+//                    // notify the adpter that we've added an item
+//                    try {
+//                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
+//                        tweets.add(tweet);
+//                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
             }
 
             @Override

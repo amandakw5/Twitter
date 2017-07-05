@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.codepath.oauth.OAuthLoginActionBarActivity;
@@ -44,4 +45,8 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 		getClient().connect();
 	}
 
+    public void onProfileView(MenuItem item) {
+		Intent i = new Intent(this, ProfileActivity.class);
+		startActivity(i);
+    }
 }
