@@ -40,6 +40,34 @@ public class User extends BaseModel {
     @Column
     public String bio;
 
+    public long getId() {
+        return uid;
+    }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public int getFollowers_count() {
+        return followers_count;
+    }
+
+    public int getFollowing() {
+        return following;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
     // deserialize the JSON
     public static User fromJSON(JSONObject json) throws JSONException {
         User user = new User();
@@ -55,9 +83,6 @@ public class User extends BaseModel {
         return user;
     }
 
-    public void setUid(long uid) {
-        this.uid = uid;
-    }
 
     public void setScreenName(String screenName) {
         this.screenName = screenName;
@@ -73,6 +98,14 @@ public class User extends BaseModel {
 
     public void setFollowers_count(int followers_count) {
         this.followers_count = followers_count;
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
     }
 
     public void setFollowing(int following) {

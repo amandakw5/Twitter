@@ -24,6 +24,8 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
+import static com.codepath.apps.restclienttemplate.Tweet.fromJSON;
+
 /**
  * Created by awestort on 7/5/17.
  */
@@ -33,6 +35,7 @@ public class ComposeFragment extends DialogFragment implements View.OnClickListe
     TwitterClient client;
     Button tweet;
     TextView exit;
+    private ComposeFragmentListener listener;
 
     @Override
     public void onClick(View v) {
@@ -40,7 +43,7 @@ public class ComposeFragment extends DialogFragment implements View.OnClickListe
     }
 
     public interface ComposeFragmentListener {
-        void onFinishEditDialog(String inputText);
+        void onFinishEditDialog(Tweet inputText);
     }
 
     public static ComposeFragment newInstance(String title){
@@ -75,14 +78,16 @@ public class ComposeFragment extends DialogFragment implements View.OnClickListe
         tweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 client = TwitterApp.getRestClient();
                 client.sendTweet(mEditText.getText().toString(), new JsonHttpResponseHandler(){
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         Log.d("TwitterClient", response.toString());
                         try {
-                            Tweet t = Tweet.fromJSON(response);
+                            Tweet t = fromJSON(response);
+                            listener.onFinishEditDialog(t);
+
+                            dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -126,6 +131,9 @@ public class ComposeFragment extends DialogFragment implements View.OnClickListe
         super.onResume();
     }
 
+    public void setListener(ComposeFragmentListener listener) {
+        this.listener = listener;
+    }
 //    @Override
 //    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 //        return false;

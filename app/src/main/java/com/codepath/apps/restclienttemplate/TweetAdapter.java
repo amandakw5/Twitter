@@ -32,9 +32,13 @@ import cz.msebera.android.httpclient.Header;
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     List<Tweet> mTweets;
+
+    public void setmTweets(List<Tweet> mTweets) {
+        this.mTweets = mTweets;
+    }
+
     Context context;
     private final int REQUEST_CODE = 20;
-    Tweet newtweet;
     private TweetAdapterListener mListener;
     TwitterClient client;
 
@@ -330,4 +334,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         mTweets.clear();
         notifyDataSetChanged();
     }
+
+
 }

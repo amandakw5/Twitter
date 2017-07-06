@@ -49,6 +49,21 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 //                    // notify the adpter that we've added an item
                     try {
                         Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
+                        tweet.setBody(tweet.body);
+                        tweet.setCreatedAt(tweet.createdAt);
+                        tweet.setFavorited(tweet.favorited);
+                        tweet.setMediaUrl(tweet.mediaUrl);
+                        tweet.setRetweeted(tweet.retweeted);
+                        tweet.setUid(tweet.uid);
+                        tweet.setUser(tweet.user);
+                        tweet.user.setId(tweet.user.uid);
+                        tweet.user.setBio(tweet.user.bio);
+                        tweet.user.setFollowers_count(tweet.user.followers_count);
+                        tweet.user.setProfileImageUrl(tweet.user.profileImageUrl);
+                        tweet.user.setFollowing(tweet.user.following);
+                        tweet.user.setName(tweet.user.name);
+                        tweet.user.setScreenName(tweet.user.screenName);
+                        tweet.save();
                         tweets.add(tweet);
                         tweetAdapter.notifyItemInserted(tweets.size() - 1);
                     } catch (JSONException e) {
@@ -65,13 +80,13 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
+                // Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
+                // Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
             }
         });

@@ -25,8 +25,37 @@ public class Tweet extends BaseModel{
     @Column
     public String createdAt;
 
+    public long getUid() {
+        return uid;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getMediaUrl() {
+        return mediaUrl;
+    }
+
+    public boolean isFavorited() {
+        return favorited;
+    }
+
+    public boolean isRetweeted() {
+        return retweeted;
+    }
+
     @Column
     @ForeignKey(saveForeignKeyModel = false)
+
     public User user;
     @Column
     public String mediaUrl;
@@ -78,6 +107,10 @@ public class Tweet extends BaseModel{
 
     public void setRetweeted(boolean retweeted) {
         this.retweeted = retweeted;
+    }
+
+    public void random() {
+
     }
 }
 

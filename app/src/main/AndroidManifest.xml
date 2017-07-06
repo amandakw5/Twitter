@@ -6,14 +6,20 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <provider
+        android:authorities="com.codepath.myapp.provider"
+        android:exported="true"
+        android:name=".provider.MyDatabase_Provider"/>
 
     <application
         android:name=".TwitterApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="Home"
-        android:title="Home"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:title="Home">
         <activity
             android:name=".LoginActivity"
             android:label="Home"
@@ -40,9 +46,8 @@
         <activity android:name=".ReplyTweet" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".FollowActivity" />
+        <activity android:name=".SearchActivity">
+        </activity>
     </application>
-    <provider
-        android:authorities="com.codepath.myapp.provider"
-        android:exported="true"
-        android:name=".provider.MyDatabase_Provider"/>
+
 </manifest>

@@ -15,13 +15,16 @@ import android.widget.ProgressBar;
 
 import com.codepath.apps.restclienttemplate.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.restclienttemplate.R;
+import com.codepath.apps.restclienttemplate.TimelineActivity;
 import com.codepath.apps.restclienttemplate.Tweet;
 import com.codepath.apps.restclienttemplate.TweetAdapter;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
 import static com.codepath.apps.restclienttemplate.R.id.swipeContainer;
@@ -37,7 +40,7 @@ public class TweetsListFragment extends Fragment  implements TweetAdapter.TweetA
         public void onTweetSelected(Tweet tweet);
     }
     public TweetAdapter tweetAdapter; // data source
-    public ArrayList<Tweet>tweets;
+    public List<Tweet> tweets;
     RecyclerView rvTweets;
 
     private final int REQUEST_CODE = 20;
@@ -59,7 +62,13 @@ public class TweetsListFragment extends Fragment  implements TweetAdapter.TweetA
         miActionProgress = (ProgressBar) v.findViewById(R.id.miActionProgress);
         //client = TwitterApp.getRestClient();
         // init the arraylist(data sourxe)
-        tweets = new ArrayList<>();
+        if (TimelineActivity.internet) {
+            tweets = new ArrayList<>();
+        }
+        else{
+            tweets.addAll(SQLite.select().
+                    from(Tweet.class).queryList());
+        }
 //        // construct the adapterb from this datasource
         tweetAdapter = new TweetAdapter(tweets, this);
 //        // RecyclerView setup (layout manager, use adapter)
@@ -144,4 +153,5 @@ public class TweetsListFragment extends Fragment  implements TweetAdapter.TweetA
             }
         }, 1000);
     }
+
 }

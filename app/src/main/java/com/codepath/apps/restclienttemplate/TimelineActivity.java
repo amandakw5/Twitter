@@ -1,12 +1,14 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,20 +16,13 @@ import android.view.MenuItem;
 import com.codepath.apps.restclienttemplate.fragments.ComposeFragment;
 import com.codepath.apps.restclienttemplate.fragments.TweetsListFragment;
 import com.codepath.apps.restclienttemplate.fragments.TweetsPagerAdapter;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
-
-public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener {
+public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener, ComposeFragment.ComposeFragmentListener {
+    public static boolean internet;
     private final int REQUEST_CODE = 20;
 
-    MenuItem miActionProgressItem;
     TwitterClient client;
 
     @Override
@@ -41,8 +36,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
         getSupportActionBar().setTitle("Home");
         //setup the Tablayout to use the view pager
-
-
+        internet = isOnline();
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(vpPager);
 
@@ -67,10 +61,12 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 
             }
         });
+
     }
     private void showEditDialog() {
         FragmentManager fm = getFragmentManager();
         ComposeFragment editNameDialogFragment = ComposeFragment.newInstance("Some Title");
+        editNameDialogFragment.setListener(this);
         editNameDialogFragment.show(fm, "activity_compose");
     }
 
@@ -99,7 +95,6 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
@@ -124,36 +119,51 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         Intent i = new Intent(this, TweetDetails.class);
         startActivity(i);
     }
-    public void onFinishEditDialog(String t) {
+
+    @Override
+    public void onFinishEditDialog(Tweet inputText) {
+        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        //set the adapter for the pager
+        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(vpPager);
         client = TwitterApp.getRestClient();
-        client.sendTweet(t, new JsonHttpResponseHandler(){
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        //set the adapter for the pager
+        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(vpPager);
+        tabLayout.getTabAt(0).setIcon(tabIconsSelected[0]);
+        for (int i = 1; i < tabIconsUnselected.length; i++) {
+            tabLayout.getTabAt(i).setIcon(tabIconsUnselected[i]);
+        }
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.d("TwitterClient", response.toString());
-                try {
-                    Tweet t = Tweet.fromJSON(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.d("TwitterClient", responseString);
-                throwable.printStackTrace();
+            public void onTabSelected(TabLayout.Tab tab) {
+                tabLayout.getTabAt(tab.getPosition()).setIcon(tabIconsSelected[tab.getPosition()]);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
+            public void onTabUnselected(TabLayout.Tab tab) {
+                tabLayout.getTabAt(tab.getPosition()).setIcon(tabIconsUnselected[tab.getPosition()]);
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
-
+        client = TwitterApp.getRestClient();
+    }
+    public boolean isOnline() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
     }
 }
