@@ -37,21 +37,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                addItems(response);
-                // Log.d("TwitterClient", response.toString());
-                // iterate through the JSON array
-                // for each entry, deserialize the JSON object
-//                for (int i = 0; i < response.length(); i++){
-////                    // convert each object to a Tweet model
-////                    // add the Tweet model to our data source
-////                    // notify the adpter that we've added an item
-//                   try {
-//                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
-//                        tweets.add(tweet);
-//                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
+
             }
 
             @Override
@@ -82,22 +68,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
             }
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                // Log.d("TwitterClient", response.toString());
-                // iterate through the JSON array
-                // for each entry, deserialize the JSON object
                 addItems(response);
-//                for (int i = 0; i < response.length(); i++){
-//                    // convert each object to a Tweet model
-//                    // add the Tweet model to our data source
-//                    // notify the adpter that we've added an item
-//                    try {
-//                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
-//                        tweets.add(tweet);
-//                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
             }
 
             @Override

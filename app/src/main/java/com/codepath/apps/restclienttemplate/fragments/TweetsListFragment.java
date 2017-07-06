@@ -115,6 +115,7 @@ public class TweetsListFragment extends Fragment  implements TweetAdapter.TweetA
         try {
             for(int i = 0; i < response.length(); i++){
                 Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
+                tweet.save();
                 tweets.add(tweet);
                 tweetAdapter.notifyItemInserted(tweets.size() -1);
             }

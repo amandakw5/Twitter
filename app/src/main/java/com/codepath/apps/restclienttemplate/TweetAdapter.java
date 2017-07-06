@@ -25,8 +25,6 @@ import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
-import static android.app.Activity.RESULT_OK;
-
 /**
  * Created by awestort on 6/26/17.
  */
@@ -38,6 +36,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     private final int REQUEST_CODE = 20;
     Tweet newtweet;
     private TweetAdapterListener mListener;
+    TwitterClient client;
 
     public interface TweetAdapterListener {
         public void onItemsSelected(View view, int position);
@@ -308,15 +307,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         }
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // REQUEST_CODE is defined above
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            // Extract name value from result extras
-            newtweet = Parcels.unwrap(data.getParcelableExtra("twee"));
-            mTweets.add(0, newtweet);
-            notifyItemInserted(0);
-        }
-    }
 
     public String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
@@ -338,7 +328,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
     // Clean all elements of the recycler
     public void clear() {
         mTweets.clear();
-
         notifyDataSetChanged();
     }
 }

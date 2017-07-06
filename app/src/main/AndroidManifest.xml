@@ -12,6 +12,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="Home"
+        android:title="Home"
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
@@ -40,5 +41,8 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".FollowActivity" />
     </application>
-
+    <provider
+        android:authorities="com.codepath.myapp.provider"
+        android:exported="true"
+        android:name=".provider.MyDatabase_Provider"/>
 </manifest>
