@@ -56,7 +56,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                         tweet.setRetweeted(tweet.retweeted);
                         tweet.setUid(tweet.uid);
                         tweet.setUser(tweet.user);
-                        tweet.user.setId(tweet.user.uid);
+                        tweet.user.setUid(tweet.user.uid);
                         tweet.user.setBio(tweet.user.bio);
                         tweet.user.setFollowers_count(tweet.user.followers_count);
                         tweet.user.setProfileImageUrl(tweet.user.profileImageUrl);

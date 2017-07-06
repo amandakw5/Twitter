@@ -5,16 +5,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.widget.FrameLayout;
 
 import com.codepath.apps.restclienttemplate.fragments.SearchTweetsFragment;
 
 public class SearchActivity extends AppCompatActivity {
     public SearchView searchQuery;
+    public FrameLayout flContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         searchQuery = (SearchView) findViewById(R.id.thesearch);
+        flContainer = (FrameLayout) findViewById(R.id.flContainer);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().
                     replace(R.id.flContainer, new SearchTweetsFragment(), "SOMETAG").

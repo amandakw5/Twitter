@@ -101,9 +101,6 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         switch (item.getItemId()) {
             case R.id.theicon:
                  showEditDialog();
-//                Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
-//                i.putExtra("mode", 2); // pass arbitrary data to launched activity
-//                startActivityForResult(i, REQUEST_CODE);
                 return true;
             case R.id.menuProfile:
                 Intent in = new Intent(TimelineActivity.this, ProfileActivity.class);

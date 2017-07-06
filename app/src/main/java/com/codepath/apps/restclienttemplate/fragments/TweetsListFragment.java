@@ -24,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 
@@ -62,12 +63,11 @@ public class TweetsListFragment extends Fragment  implements TweetAdapter.TweetA
         miActionProgress = (ProgressBar) v.findViewById(R.id.miActionProgress);
         //client = TwitterApp.getRestClient();
         // init the arraylist(data sourxe)
-        if (TimelineActivity.internet) {
-            tweets = new ArrayList<>();
-        }
-        else{
+        tweets = new ArrayList<>();
+        if (!TimelineActivity.internet) {
             tweets.addAll(SQLite.select().
                     from(Tweet.class).queryList());
+            Collections.reverse(tweets);
         }
 //        // construct the adapterb from this datasource
         tweetAdapter = new TweetAdapter(tweets, this);

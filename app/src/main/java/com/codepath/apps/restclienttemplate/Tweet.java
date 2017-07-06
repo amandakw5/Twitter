@@ -54,8 +54,7 @@ public class Tweet extends BaseModel{
     }
 
     @Column
-    @ForeignKey(saveForeignKeyModel = false)
-
+    @ForeignKey(saveForeignKeyModel = true)
     public User user;
     @Column
     public String mediaUrl;
@@ -109,9 +108,6 @@ public class Tweet extends BaseModel{
         this.retweeted = retweeted;
     }
 
-    public void random() {
-
-    }
 }
 
 
