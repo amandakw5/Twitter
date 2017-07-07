@@ -47,6 +47,7 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".FollowActivity" />
         <activity android:name=".SearchActivity">
+
         </activity>
     </application>
 

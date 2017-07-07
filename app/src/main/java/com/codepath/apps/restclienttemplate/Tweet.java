@@ -63,6 +63,12 @@ public class Tweet extends BaseModel{
     @Column
     public boolean retweeted;
 
+    @Column
+    public int numRetweets;
+
+    @Column
+    public int numFavorites;
+
     // deserialize the JSON
     public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
@@ -74,10 +80,28 @@ public class Tweet extends BaseModel{
         tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         tweet.favorited = jsonObject.getBoolean("favorited");
         tweet.retweeted = jsonObject.getBoolean("retweeted");
+        tweet.numFavorites = jsonObject.getInt("favorite_count");
+        tweet.numRetweets = jsonObject.getInt("retweet_count");
         if ((jsonObject.has("entities")) && (jsonObject.getJSONObject("entities").has("media"))){
             tweet.mediaUrl = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url");
         }
         return tweet;
+    }
+
+    public int getNumRetweets() {
+        return numRetweets;
+    }
+
+    public void setNumRetweets(int numRetweets) {
+        this.numRetweets = numRetweets;
+    }
+
+    public int getNumFavorites() {
+        return numFavorites;
+    }
+
+    public void setNumFavorites(int numFavorites) {
+        this.numFavorites = numFavorites;
     }
 
     public void setUid(long uid) {

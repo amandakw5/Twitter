@@ -22,6 +22,8 @@ public class TweetsPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 return new HomeTimelineFragment();
+            case 1:
+                return new SearchTweetsFragment();
             default:
                 return new MentionsTimelineFragment();
         }

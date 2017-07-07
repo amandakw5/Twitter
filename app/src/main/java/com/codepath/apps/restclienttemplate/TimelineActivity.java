@@ -29,6 +29,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+
         FlowManager.init(new FlowConfig.Builder(this).build());
         // get the view pager
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);

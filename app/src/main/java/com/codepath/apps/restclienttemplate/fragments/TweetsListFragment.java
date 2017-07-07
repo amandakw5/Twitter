@@ -69,6 +69,7 @@ public class TweetsListFragment extends Fragment  implements TweetAdapter.TweetA
                     from(Tweet.class).queryList());
             Collections.reverse(tweets);
         }
+        deleteData(tweets);
 //        // construct the adapterb from this datasource
         tweetAdapter = new TweetAdapter(tweets, this);
 //        // RecyclerView setup (layout manager, use adapter)
@@ -133,6 +134,13 @@ public class TweetsListFragment extends Fragment  implements TweetAdapter.TweetA
         }
 
     }
+    public void deleteData(List<Tweet> t){
+        for (int i = 0; i <t.size(); i++ ){
+            Tweet tweet = t.get(i);
+            tweet.delete();
+        }
+    }
+
 
     @Override
     public void onItemsSelected(View view, int position){

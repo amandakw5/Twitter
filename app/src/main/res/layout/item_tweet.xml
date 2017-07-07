@@ -56,7 +56,7 @@
     <ImageView
         android:id="@+id/tlMedia"
         android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_alignStart="@+id/tvBody"
         android:layout_below="@+id/tvBody"
         android:layout_weight="0.04"
@@ -72,34 +72,56 @@
 
         <ImageView
             android:id="@+id/dtreply"
-            android:layout_width="20dp"
+            android:layout_width="10dp"
             android:layout_height="20dp"
             android:layout_below="@+id/tvBody"
+            android:layout_marginLeft="50dp"
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/ivProfileImage"
-            android:layout_weight="0.04"
+            android:layout_weight="0.02"
+            android:cropToPadding="false"
             app:srcCompat="@drawable/replyicon" />
 
         <ImageView
             android:id="@+id/tlRetweet"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="20dp"
+            android:layout_marginLeft="50dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="0.04"
+            android:layout_weight="0.02"
             app:srcCompat="@drawable/retweet" />
+
+        <TextView
+            android:id="@+id/numRetweets"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="10dp" />
 
         <ImageView
             android:id="@+id/tlFavorite"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="20dp"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="0.04"
+            android:layout_weight="0.02"
             app:srcCompat="@drawable/heart" />
+
+        <TextView
+            android:id="@+id/numFavorites"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_above="@+id/linearLayout2"
+            android:layout_alignEnd="@+id/tlMedia"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="0.02" />
 
         <ImageView
             android:id="@+id/tlMessage"
-            android:layout_width="wrap_content"
+            android:layout_width="15dp"
             android:layout_height="20dp"
+            android:layout_marginEnd="25dp"
             android:layout_marginTop="10dp"
             android:layout_weight="0.04"
             app:srcCompat="@drawable/message" />

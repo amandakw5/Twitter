@@ -74,6 +74,12 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         holder.tvName.setText(tweet.user.name);
         holder.tvCreated.setText(getRelativeTimeAgo(tweet.createdAt));
 
+        if (tweet.numFavorites != 0){
+            holder.numFavorites.setText(tweet.numFavorites + "");
+        }
+        if (tweet.numRetweets != 0) {
+            holder.numRetweets.setText(tweet.numRetweets + "");
+        }
         // set circle bitmap
 
         Glide.with(context).load(tweet.user.profileImageUrl).transform(new CircleTransform(context)).into(holder.ivProfileImage);
@@ -114,6 +120,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
         public ImageView tlRetweet;
         public ImageView tlMedia;
         public String mediaUrl;
+        public TextView numFavorites;
+        public TextView numRetweets;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -127,6 +135,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
             tvCreated = (TextView) itemView.findViewById(R.id.tvCreated);
             tlFavorite = (ImageView) itemView.findViewById(R.id.tlFavorite);
             tlRetweet = (ImageView) itemView.findViewById(R.id.tlRetweet);
+            numFavorites= (TextView) itemView.findViewById(R.id.numFavorites);
+            numRetweets = (TextView) itemView.findViewById(R.id.numRetweets);
             tlMedia = (ImageView) itemView.findViewById(R.id.tlMedia);
             client = TwitterApp.getRestClient();
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -226,7 +236,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                     int position = getAdapterPosition();
                     Tweet tweet = mTweets.get(position);
                     if (tweet.retweeted) {
-                        Glide.with(context).load(R.drawable.ic_vector_retweet).into(tlRetweet);
+                        Glide.with(context).load(R.drawable.ic_vector_retweet_stroke).into(tlRetweet);
                         client.unretweetTweet(tweet.uid, new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -253,7 +263,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                         });
                         tweet.retweeted = false;
                     } else {
-                        Glide.with(context).load(R.drawable.retweet).into(tlRetweet);
+                        Glide.with(context).load(R.drawable.ic_vector_retweet).into(tlRetweet);
                         client.retweetTweet(tweet.uid, new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

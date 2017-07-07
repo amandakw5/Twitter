@@ -39,7 +39,6 @@ public class ComposeFragment extends DialogFragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-
     }
 
     public interface ComposeFragmentListener {
@@ -86,7 +85,6 @@ public class ComposeFragment extends DialogFragment implements View.OnClickListe
                         try {
                             Tweet t = fromJSON(response);
                             listener.onFinishEditDialog(t);
-
                             dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
