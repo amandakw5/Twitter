@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,7 +36,11 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
         //set the adapter for the pager
         vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
-        getSupportActionBar().setTitle("Home");
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setTitle("Home");
+        }
+
         //setup the Tablayout to use the view pager
         internet = isOnline();
         final TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
