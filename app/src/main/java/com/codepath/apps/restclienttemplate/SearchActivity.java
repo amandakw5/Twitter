@@ -12,7 +12,7 @@ import android.widget.FrameLayout;
 import com.codepath.apps.restclienttemplate.fragments.SearchTweetsFragment;
 
 public class SearchActivity extends AppCompatActivity {
-    public SearchView searchQuery;
+
     public FrameLayout flContainer;
     MenuItem searchItem;
     @Override

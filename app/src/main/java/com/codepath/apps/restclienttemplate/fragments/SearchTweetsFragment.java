@@ -32,7 +32,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class SearchTweetsFragment extends TweetsListFragment {
     TwitterClient client;
-    public SearchView searchQuery;
+    SearchView searchQuery;
     public FrameLayout flContainer;
     public ArrayList<Tweet> mytweets;
 

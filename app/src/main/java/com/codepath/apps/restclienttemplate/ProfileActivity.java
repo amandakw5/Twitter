@@ -16,16 +16,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class ProfileActivity extends AppCompatActivity {
     Context context;
-    ImageView pfProfilePicture;
-    TextView pfName;
-    TextView pfUserName;
-    TextView following;
-    TextView Followers;
-    TextView pfBio;
+    @BindView (R.id.pfProfilePicture) ImageView pfProfilePicture;
+    @BindView(R.id.pfName) TextView pfName;
+    @BindView(R.id.pfUserName) TextView pfUserName;
+    @BindView(R.id.following) TextView following;
+    @BindView(R.id.Followers) TextView Followers;
+    @BindView(R.id.pfBio) TextView pfBio;
     User user;
     TwitterClient client;
 
@@ -42,7 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
         context = this;
         setContentView(R.layout.activity_profile);
         client = TwitterApp.getRestClient();
-
+        ButterKnife.bind(this);
         if (screenName.equals("")) {
             client.getUserInfo(new JsonHttpResponseHandler() {
                 @Override
@@ -77,12 +79,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
     public void populateUserHeadline(User user){
         final User u = user;
-        pfProfilePicture = (ImageView) findViewById(R.id.pfProfilePicture);
-        pfUserName = (TextView) findViewById(R.id.pfUserName);
-        pfName = (TextView) findViewById(R.id.pfName);
-        Followers = (TextView) findViewById(R.id.Followers);
-        following = (TextView) findViewById(R.id.following);
-        pfBio = (TextView) findViewById(R.id.pfBio);
+
         Glide.with(context)
                 .load(user.profileImageUrl)
                 .transform(new CircleTransform(context))

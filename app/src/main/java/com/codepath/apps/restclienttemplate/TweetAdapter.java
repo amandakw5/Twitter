@@ -23,6 +23,8 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -109,35 +111,23 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
 
     // create ViewHolder class
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public ImageView ivProfileImage;
-        public TextView tvUserName;
+        @BindView(R.id.ivProfileImage) ImageView ivProfileImage;
+        @BindView(R.id.tvUserName)  TextView tvUserName;
         TwitterClient client;
-        public TextView tvBody;
-        public TextView tvName;
-        public TextView tvCreated;
-        public ImageView dtreply;
-        public ImageView tlFavorite;
-        public ImageView tlRetweet;
-        public ImageView tlMedia;
-        public String mediaUrl;
-        public TextView numFavorites;
-        public TextView numRetweets;
+        @BindView(R.id.tvBody)  TextView tvBody;
+        @BindView(R.id.tvName)  TextView tvName;
+        @BindView(R.id.tvCreated)  TextView tvCreated;
+        @BindView(R.id.dtreply)  ImageView dtreply;
+        @BindView(R.id.tlFavorite)  ImageView tlFavorite;
+        @BindView(R.id.tlRetweet)  ImageView tlRetweet;
+        @BindView(R.id.tlMedia)  ImageView tlMedia;
+        @BindView(R.id.numFavorites)  TextView numFavorites;
+        @BindView(R.id.numRetweets)  TextView numRetweets;
 
         public ViewHolder(View itemView) {
             super(itemView);
             // perform findViewById lookups
-
-            ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
-            tvUserName = (TextView) itemView.findViewById(R.id.tvUserName);
-            tvBody = (TextView) itemView.findViewById(R.id.tvBody);
-            tvName = (TextView) itemView.findViewById(R.id.tvName);
-            dtreply = (ImageView) itemView.findViewById(R.id.dtreply);
-            tvCreated = (TextView) itemView.findViewById(R.id.tvCreated);
-            tlFavorite = (ImageView) itemView.findViewById(R.id.tlFavorite);
-            tlRetweet = (ImageView) itemView.findViewById(R.id.tlRetweet);
-            numFavorites= (TextView) itemView.findViewById(R.id.numFavorites);
-            numRetweets = (TextView) itemView.findViewById(R.id.numRetweets);
-            tlMedia = (ImageView) itemView.findViewById(R.id.tlMedia);
+            ButterKnife.bind(this, itemView);
             client = TwitterApp.getRestClient();
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -200,6 +190,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                             }
                         });
                         tweet.favorited = false;
+                        numFavorites.setText((tweet.numFavorites -1)+"");
+
                     } else {
                         Glide.with(context).load(R.drawable.hearted).into(tlFavorite);
                         client.favoriteTweet(tweet.uid, new JsonHttpResponseHandler() {
@@ -227,6 +219,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                             }
                         });
                         tweet.favorited = true;
+                        numFavorites.setText((tweet.numFavorites + 1)+"");
                     }
                 }
             });
@@ -262,6 +255,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                             }
                         });
                         tweet.retweeted = false;
+                        numRetweets.setText((tweet.numRetweets - 1) +"");
                     } else {
                         Glide.with(context).load(R.drawable.ic_vector_retweet).into(tlRetweet);
                         client.retweetTweet(tweet.uid, new JsonHttpResponseHandler() {
@@ -289,6 +283,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder>{
                             }
                         });
                         tweet.retweeted = true;
+                        numRetweets.setText((tweet.numRetweets + 1) +"");
                     }
                 }
             });

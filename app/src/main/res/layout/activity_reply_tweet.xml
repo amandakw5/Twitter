@@ -29,17 +29,19 @@
             android:inputType="textAutoComplete|textPersonName"
             android:textAlignment="viewStart" />
     </android.support.design.widget.TextInputLayout>
-
     <Button
         android:id="@+id/atweet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onSubmit"
-        android:text="Tweet"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/textInputLayout"
-        android:layout_alignParentEnd="true" />
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="10dp"
+        android:background="#1dcaff"
+        android:text="Reply"
+        android:textColor="@android:color/white"
+        android:textSize="15dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/replyingTo"

@@ -15,13 +15,15 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class FollowActivity extends AppCompatActivity {
     FollowAdapter FollowAdapter; // data source
     ArrayList<User> follows;
     JSONArray users;
-    RecyclerView rvFollow;
+    @BindView(R.id.rvFollow) RecyclerView rvFollow;
     TwitterClient client;
     User user;
     private EndlessRecyclerViewScrollListener scrollListener;
@@ -31,7 +33,8 @@ public class FollowActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_follow);
-        rvFollow = (RecyclerView) findViewById(R.id.rvFollow);
+        ButterKnife.bind(this);
+
         client = TwitterApp.getRestClient();
         super.onCreate(savedInstanceState);
 
